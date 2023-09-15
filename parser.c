@@ -15,7 +15,6 @@ void parse(FILE *fptr) {
     idx = -1;
     advance();
     while (current_char != -1) {
-        print_current_char();
         if (current_char == ' ' || current_char == '\t' || current_char == '\n') {
             advance();
         } else if (token_ahead(keyword_var)) {
@@ -147,7 +146,6 @@ void parser_error(char *message) {
 }
 
 bool token_ahead(token_type t) {
-    printf("Looking for token: %s\n", t);
     bool is_ahead = true;
     for (int i = 0; i < strlen(t); i++) {
         char t_char = t[i];
