@@ -49,7 +49,7 @@ size_t get_ahead_size(char);
 
 char *look_ahead_until(char);
 
-char *collect_until(char);
+void collect_until(char **, char);
 
 char seek(const int *, bool);
 
@@ -59,9 +59,9 @@ char prev(int mov);
 
 char *current_char_str();
 
-char *collect_string();
+void collect_string(char **);
 
-void add_token(token*);
+void add_token(token *);
 
 void print_current_char();
 

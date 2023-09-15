@@ -24,11 +24,11 @@ void parse(FILE *fptr) {
             bool collect_value = false;
             token t;
             if (strstr(ahead, "=")) {
-                identifier = collect_until(' ');
+                collect_until(&identifier, ' ');
                 collect_value = true;
                 advance();
             } else {
-                identifier = collect_until('\n');
+                collect_until(&identifier, '\n');
             }
             printf("\nVariable: %s\n", identifier);
             advance_times(2);
@@ -38,10 +38,10 @@ void parse(FILE *fptr) {
                 if (current_char == '"') {
                     advance();
                     value_type = type_string;
-                    value = collect_string();
+                    collect_string(&value);
                 } else if (strstr(type_int, current_char_str())) {
                     value_type = type_int;
-                    value = collect_until('\n');
+                    collect_until(&value, '\n');
                 } else {
                     parser_error("Unknown data type!");
                 }
@@ -211,17 +211,13 @@ char *look_ahead_until(char until) {
     return collected;
 }
 
-char *collect_until(char until) {
-    char *collection;
+void collect_until(char **collection, char until) {
     size_t ahead_size = get_ahead_size(until);
-    collection = (char *) malloc(ahead_size * sizeof(char *));
+    *collection = (char *) malloc(ahead_size * sizeof(char *));
     while (current_char != until && current_char != -1) {
-        sprintf(collection, "%s%c", collection, current_char);
+        sprintf(*collection, "%s%c", *collection, current_char);
         advance();
     }
-    char *collected = strdup(collection);
-    free(collection);
-    return collected;
 }
 
 char seek(const int *mov, bool reverse) {
@@ -259,10 +255,9 @@ char *current_char_str() {
     return current;
 }
 
-char *collect_string() {
-    char *collection;
+void collect_string(char **collection) {
     size_t ahead_size = get_ahead_size('"');
-    collection = (char *) malloc(ahead_size * sizeof(char *));
+    *collection = (char *) malloc(ahead_size * sizeof(char *));
     while (current_char != -1) {
         if (current_char == '"' && prev(1) != '\\') {
             break;
@@ -271,11 +266,8 @@ char *collect_string() {
             advance();
             continue;
         }
-        sprintf(collection, "%s%c", collection, current_char);
+        sprintf(*collection, "%s%c", *collection, current_char);
         advance();
     }
-    char *collected = strdup(collection);
-    free(collection);
     advance();
-    return collected;
 }
