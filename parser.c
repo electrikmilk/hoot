@@ -71,21 +71,19 @@ void print_current_char() {
 }
 
 void print_char(char c) {
-    char* character[10];
     switch(c) {
         case '\n':
-            sprintf(character, "NEW LINE");
+            printf("NEW LINE %ld:%ld\n", line_idx, line_char_idx);
             break;
         case '\t':
-            sprintf(character, "TAB");
+            printf("TAB %ld:%ld\n", line_idx, line_char_idx);
             break;
         case ' ':
-            sprintf(character, "SPACE");
+            printf("SPACE %ld:%ld\n", line_idx, line_char_idx);
             break;
         default:
-            sprintf(character, "%c", c);
+            printf("%c %ld:%ld\n", c, line_idx, line_char_idx);
     }
-    printf("%s\n", character, character);
 }
 
 void add_token(token *t) {
